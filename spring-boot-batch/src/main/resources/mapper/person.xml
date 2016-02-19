@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.naver.simple.repository.SimpleRepository">
+    <select id="getPersonList" resultType="com.naver.simple.model.Person">
+        SELECT
+        	id
+        	,name
+        	,age
+        FROM person
+    </select>
+    
+    <select id="getPersonListPaging" resultType="com.naver.simple.model.Person">
+        SELECT
+        	id
+        	,name
+        	,age
+        FROM person
+        LIMIT #{_skiprows}, #{_pagesize}
+    </select>
+    
+    <update id="updatePerson" parameterType="com.naver.simple.model.Person">
+        UPDATE person set name = #{name}, age = #{age}
+        where id = #{id}
+    </update>
+</mapper> 
