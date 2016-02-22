@@ -45,6 +45,17 @@
 			<scope>test</scope>
 		</dependency>
 		
+		<!-- WEB -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tomcat.embed</groupId>
+			<artifactId>tomcat-embed-jasper</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		
 		<!-- Mybatis -->
 		<dependency>
 			<groupId>org.mybatis</groupId>
@@ -56,16 +67,6 @@
 			<artifactId>mybatis-spring</artifactId>
 			<version>1.2.3</version>
 		</dependency>
-		
-		<!-- Testcase Exception 때문에 삽입 -->
-		<dependency>
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-commons</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
 	</dependencies>
 	
 	<build>
