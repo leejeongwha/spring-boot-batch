@@ -44,7 +44,7 @@ public class SimpleStepConfiguration {
 		MyBatisPagingItemReader<Person> reader = new MyBatisPagingItemReader<Person>();
 		reader.setSqlSessionFactory(sqlSessionFactory.getObject());
 		reader.setQueryId("getPersonListPaging");
-		reader.setPageSize(2);
+		reader.setPageSize(5);
 
 		return reader;
 	}
