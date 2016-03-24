@@ -35,8 +35,9 @@ public class SimpleStepConfiguration {
 	 */
 	@Bean(name = "simpleStep")
 	public Step simpleStep() throws Exception {
-		return stepBuilderFactory.get(STEP_NAME).<Person, Person> chunk(100).reader(simpleItemReader())
-				.processor(simpleItemProcessor).writer(simpleItemWriter()).build();
+		return stepBuilderFactory.get(STEP_NAME).<Person, Person> chunk(100).faultTolerant()
+				.skip(RuntimeException.class).skipLimit(5).reader(simpleItemReader()).processor(simpleItemProcessor)
+				.writer(simpleItemWriter()).build();
 	}
 
 	@Bean

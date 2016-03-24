@@ -31,6 +31,11 @@ public class SimpleItemProcessor implements ItemProcessor<Person, Person> {
 	public Person process(final Person user) throws Exception {
 		log.info("jobParamters : start - {}, end -{}", start, end);
 
+		// 강제로 RuntimeException 발생
+		if (user.getName().equals("person5")) {
+			throw new RuntimeException();
+		}
+
 		String name = user.getName().toUpperCase();
 		Integer age = user.getAge() + 100;
 
