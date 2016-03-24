@@ -12,11 +12,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.naver.simple.model.Person;
+import com.naver.simple.service.LogDeletingTasklet;
 import com.naver.simple.service.SimpleItemProcessor;
 
 @Configuration
 public class SimpleStepConfiguration {
 	private static final String STEP_NAME = "simpleStep";
+	private static final String LOG_DELETE_STEP_NAME = "simpleStep";
 
 	@Autowired
 	private StepBuilderFactory stepBuilderFactory;
@@ -57,5 +59,10 @@ public class SimpleStepConfiguration {
 		writer.setStatementId("com.naver.simple.repository.SimpleRepository.updatePerson");
 
 		return writer;
+	}
+
+	@Bean(name = "logDeleteStep")
+	public Step logDeleteStep() throws Exception {
+		return stepBuilderFactory.get(LOG_DELETE_STEP_NAME).tasklet(new LogDeletingTasklet()).build();
 	}
 }

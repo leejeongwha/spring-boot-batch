@@ -23,11 +23,14 @@ public class SimpleJobConfiguration {
 	@Resource(name = "simpleStep")
 	private Step simpleStep;
 
+	@Resource(name = "logDeleteStep")
+	private Step logDeleteStep;
+
 	@Autowired
 	private SimpleJobCompletionNotificationListener listener;
 
 	@Bean
 	public Job simpleJob() {
-		return jobBuilderFactory.get(JOB_NAME).listener(listener).start(simpleStep).build();
+		return jobBuilderFactory.get(JOB_NAME).listener(listener).start(simpleStep).next(logDeleteStep).build();
 	}
 }
