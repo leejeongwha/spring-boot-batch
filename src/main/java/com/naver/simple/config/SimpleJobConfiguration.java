@@ -26,11 +26,20 @@ public class SimpleJobConfiguration {
 	@Resource(name = "logDeleteStep")
 	private Step logDeleteStep;
 
+	@Resource(name = "jobFailStep")
+	private Step jobFailStep;
+
 	@Autowired
 	private SimpleJobCompletionNotificationListener listener;
 
 	@Bean
 	public Job simpleJob() {
+		// flow 테스트 시 주석 해제
+		// return
+		// jobBuilderFactory.get(JOB_NAME).listener(listener).flow(simpleStep).on("FAILED").to(jobFailStep)
+		// .from(simpleStep).on("*").to(logDeleteStep).end().build();
+
 		return jobBuilderFactory.get(JOB_NAME).listener(listener).start(simpleStep).next(logDeleteStep).build();
+
 	}
 }

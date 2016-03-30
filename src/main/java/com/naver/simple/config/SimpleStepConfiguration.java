@@ -12,13 +12,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.naver.simple.model.Person;
+import com.naver.simple.service.JobFailTasklet;
 import com.naver.simple.service.LogDeletingTasklet;
 import com.naver.simple.service.SimpleItemProcessor;
 
 @Configuration
 public class SimpleStepConfiguration {
 	private static final String STEP_NAME = "simpleStep";
-	private static final String LOG_DELETE_STEP_NAME = "simpleStep";
+	private static final String LOG_DELETE_STEP_NAME = "logDeleteStep";
+	private static final String JOB_FAIL_STEP_NAME = "jobFailStep";
 
 	@Autowired
 	private StepBuilderFactory stepBuilderFactory;
@@ -37,9 +39,15 @@ public class SimpleStepConfiguration {
 	 */
 	@Bean(name = "simpleStep")
 	public Step simpleStep() throws Exception {
-		return stepBuilderFactory.get(STEP_NAME).<Person, Person> chunk(100).faultTolerant()
-				.skip(RuntimeException.class).skipLimit(5).reader(simpleItemReader()).processor(simpleItemProcessor)
-				.writer(simpleItemWriter()).build();
+		// 특정 Exception에 대한 skipLimit 테스트 시 주석 해제
+
+		// return stepBuilderFactory.get(STEP_NAME).<Person, Person>
+		// chunk(100).faultTolerant()
+		// .skip(RuntimeException.class).skipLimit(5).reader(simpleItemReader()).processor(simpleItemProcessor)
+		// .writer(simpleItemWriter()).build();
+
+		return stepBuilderFactory.get(STEP_NAME).<Person, Person> chunk(100).reader(simpleItemReader())
+				.processor(simpleItemProcessor).writer(simpleItemWriter()).build();
 	}
 
 	@Bean
@@ -64,5 +72,10 @@ public class SimpleStepConfiguration {
 	@Bean(name = "logDeleteStep")
 	public Step logDeleteStep() throws Exception {
 		return stepBuilderFactory.get(LOG_DELETE_STEP_NAME).tasklet(new LogDeletingTasklet()).build();
+	}
+
+	@Bean(name = "jobFailStep")
+	public Step jobFailStep() throws Exception {
+		return stepBuilderFactory.get(JOB_FAIL_STEP_NAME).tasklet(new JobFailTasklet()).build();
 	}
 }
