@@ -12,7 +12,7 @@ public class SecondTasklet implements Tasklet {
 
 	@Override
 	public RepeatStatus execute(StepContribution arg0, ChunkContext arg1) throws Exception {
-		log.info("파일 또는 디렉토리를 성공적으로 지웠습니다");
+		log.info("Second Job이 수행되었습니다.");
 		return RepeatStatus.FINISHED;
 	}
 

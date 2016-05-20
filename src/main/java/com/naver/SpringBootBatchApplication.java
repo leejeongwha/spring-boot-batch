@@ -35,6 +35,7 @@ public class SpringBootBatchApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... arg0) throws Exception {
+		// 커맨드 라인 파라미터로 job 결정
 		if (SIMPLE_JOB.equals(arg0[0])) {
 			JobParameters param = new JobParametersBuilder().toJobParameters();
 			jobLauncher.run(simpleJob, param);
