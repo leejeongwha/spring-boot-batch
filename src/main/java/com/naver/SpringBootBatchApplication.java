@@ -1,6 +1,6 @@
 package com.naver;
 
-import javax.annotation.Resource;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,17 +17,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class SpringBootBatchApplication implements CommandLineRunner {
 	private static final Logger log = LoggerFactory.getLogger(SpringBootBatchApplication.class);
 
-	private static final String SIMPLE_JOB = "simpleJob";
-	private static final String SECOND_JOB = "secondJob";
-
 	@Autowired
 	private JobLauncher jobLauncher;
 
-	@Resource(name = "simpleJob")
-	private Job simpleJob;
-
-	@Resource(name = "secondJob")
-	private Job secondJob;
+	@Autowired
+	private Set<Job> jobs;
 
 	public static void main(String[] args) throws Exception {
 		SpringApplication.run(SpringBootBatchApplication.class, args);
@@ -35,16 +29,16 @@ public class SpringBootBatchApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... arg0) throws Exception {
-		// 커맨드 라인 파라미터로 job 결정
-		if (SIMPLE_JOB.equals(arg0[0])) {
-			JobParameters param = new JobParametersBuilder().toJobParameters();
-			jobLauncher.run(simpleJob, param);
-		} else if (SECOND_JOB.equals(arg0[0])) {
-			JobParameters param = new JobParametersBuilder().toJobParameters();
-			jobLauncher.run(secondJob, param);
-		} else {
+		// 커맨드 라인 첫번째 파라미터로 job 결정
+		if (arg0.length == 0) {
 			log.info("선택된 job이 없습니다.");
+		} else {
+			for (Job job : jobs) {
+				if (job.getName().equals(arg0[0])) {
+					JobParameters param = new JobParametersBuilder().toJobParameters();
+					jobLauncher.run(job, param);
+				}
+			}
 		}
-
 	}
 }
